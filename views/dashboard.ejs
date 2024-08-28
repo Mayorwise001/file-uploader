@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/styles/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome, <%= user.username %>!</h1>
+        <p>Email: <%= user.email %></p>
+        <div class="stats">
+            <div class="stat-card">
+                <h2>Stats 1</h2>
+                <p>Details about stat 1...</p>
+            </div>
+            <div class="stat-card">
+                <h2>Stats 2</h2>
+                <p>Details about stat 2...</p>
+            </div>
+        </div>
+
+        <form action="/logout" method="POST">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</body>
+</html>

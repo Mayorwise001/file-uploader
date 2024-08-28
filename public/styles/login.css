@@ -1,0 +1,163 @@
+/* public/styles/login.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #6b73ff, #000dff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.login-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.form-group {
+    margin-bottom: 0.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0rem;
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #6b73ff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(107, 115, 255, 0.5);
+}
+
+.btn {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    background-color: #6b73ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #000dff;
+}
+
+.error-messages {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #f5c6cb;
+}
+
+
+.messages ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.messages li {
+    font-size: 0.9rem;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-group button {
+    width: 45%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    background-color: #6b73ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-group button:hover {
+    background-color: #000dff;
+}
+
+.btn-group .signup-link {
+    width: 45%;
+    text-align: center;
+    padding: 0.8rem;
+    font-size: 1rem;
+    background-color: #ffffff;
+    color: #6b73ff;
+    border: 1px solid #6b73ff;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-group .signup-link:hover {
+    background-color: #6b73ff;
+    color: #ffffff;
+}
+
+.app-title {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.login{
+    text-align: center;
+}
+
+@media (max-width: 500px) {
+    .login-container {
+        padding: 1.5rem;
+    }
+
+    .login-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .form-group input {
+        padding: 0.7rem;
+    }
+
+    .btn {
+        padding: 0.7rem;
+        font-size: 0.9rem;
+    }
+}

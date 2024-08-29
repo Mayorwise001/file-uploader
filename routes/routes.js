@@ -17,9 +17,11 @@ function ensureAuthenticated(req, res, next) {
 }
 
 
-router.get('/', (req, res) => {
-    res.render('login', { errors: [], formData: {}, successMessage: null });
-  });
+// router.get('/', (req, res) => {
+//     res.render('login', { errors: [], formData: {}, successMessage: null });
+//   });
+
+
   
   // Signup route with validation
 router.post('/signup', [

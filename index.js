@@ -35,8 +35,10 @@ app.use(passport.session());
 
 // Basic route
 
-app.use('/', index)
-
+// app.use('/', index)
+app.get('/', (req,res)=>{
+  res.send("Hello")
+})
 
 
 // Set up EJS as the view engine

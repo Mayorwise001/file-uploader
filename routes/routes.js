@@ -129,44 +129,6 @@ router.post('/login', [
         });
     }
 
-    // const { username, password } = req.body;
-
-    // try {
-    //     // Simulate delay (e.g., 2 seconds)
-    //     await new Promise(resolve => setTimeout(resolve, 2000));
-
-    //     // Find the user by username
-    //     const user = await User.findOne({ username });
-    //     if (!user) {
-    //         return res.render('login', {
-    //             errors: [{ msg: 'Invalid username or password' }],
-    //             formData: {}, // Clear form data on error
-    //             successMessage: ''
-    //     });
-    //     }
-
-    //     // Check if the password matches
-    //     const isMatch = await bcrypt.compare(password, user.password);
-    //     if (!isMatch) {
-    //         return res.render('login', {
-    //             errors: [{ msg: 'Invalid username or password' }],
-    //             formData: {}, // Clear form data on error
-    //             successMessage: ''
-    //     });
-
-    //     }
-
-        /// Successful login
-    // Store the success message in session
-    // req.session.successMessage = 'Successfully logged in!';
-    
-    // // Redirect to the dashboard
-    // res.redirect('/dashboard');
-    // } catch (err) {
-    //     console.error(err.message);
-    //     res.status(500).send('Server Error');
-    // }
-
 
 
     passport.authenticate('local', (err, user, info) => {
@@ -208,7 +170,7 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
 
 
 // Signout route
-router.post('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
     req.logout(() => {
         req.session.destroy((err) => {
             if (err) {

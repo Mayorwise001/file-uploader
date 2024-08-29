@@ -1,0 +1,61 @@
+/* public/styles/dashboard.css */
+
+/* Applying Google Font */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.dashboard-container {
+    text-align: center;
+}
+
+.dashboard-container h1 {
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.button-group .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background-color: #6b73ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.button-group .btn:hover {
+    background-color: #000dff;
+}
+
+@media (max-width: 500px) {
+    .dashboard-container h1 {
+        font-size: 2rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .button-group .btn {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+}

@@ -101,7 +101,7 @@ router.post('/signup', [
 });
 
 
-router.get('/', (req, res) => {
+router.get('/login', (req, res) => {
     // res.render('login', { errors: [], formData: {}, messages: [{ msg: 'Successfully logged in!', type: 'success' }], });
 
     // Clear the success message and form data from the session
@@ -118,7 +118,7 @@ router.get('/', (req, res) => {
 
 
 // POST route for login form submission
-router.post('/', [
+router.post('/login', [
     check('username').notEmpty().withMessage('Username is required'),
     check('password').notEmpty().withMessage('Password is required')
 ], async (req, res, next) => {

@@ -18,7 +18,7 @@ function ensureAuthenticated(req, res, next) {
 
 
 router.get('/', (req, res) => {
-    res.render('signup', { errors: [], formData: {}, successMessage: null });
+    res.render('login', { errors: [], formData: {}, successMessage: null });
   });
   
   // Signup route with validation
@@ -99,7 +99,7 @@ router.post('/signup', [
 });
 
 
-router.get('/login', (req, res) => {
+router.get('/', (req, res) => {
     // res.render('login', { errors: [], formData: {}, messages: [{ msg: 'Successfully logged in!', type: 'success' }], });
 
     // Clear the success message and form data from the session
@@ -116,7 +116,7 @@ router.get('/login', (req, res) => {
 
 
 // POST route for login form submission
-router.post('/login', [
+router.post('/', [
     check('username').notEmpty().withMessage('Username is required'),
     check('password').notEmpty().withMessage('Password is required')
 ], async (req, res, next) => {

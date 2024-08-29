@@ -20,12 +20,9 @@ function ensureAuthenticated(req, res, next) {
 router.get('/', (req, res) => {
     res.render('login', { errors: [], formData: {}, successMessage: null });
   });
-router.get('/signup', (req, res) => {
+  router.get('/signup', (req, res) => {
     res.render('signup', { errors: [], formData: {}, successMessage: null });
   });
-
-
-  
   // Signup route with validation
 router.post('/signup', [
     check('firstName').notEmpty().withMessage('First name is required'),
@@ -134,6 +131,7 @@ router.post('/login', [
         });
     }
 
+    
 
 
     passport.authenticate('local', (err, user, info) => {

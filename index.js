@@ -25,14 +25,15 @@ app.use(passport.session());
 
 // Basic route
 
-// app.use('/', indexRouter)
-app.get('/', (req,res)=>{
-  res.send("Hello")
-})
+app.use('/', indexRouter)
+// app.get('/', (req,res)=>{
+//   res.send("Hello")
+// })
 
 
 // Set up EJS as the view engine
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Middleware to serve static files
 app.use(express.static(path.join(__dirname, 'public')));

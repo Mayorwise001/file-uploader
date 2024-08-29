@@ -12,12 +12,12 @@ const passport = require('passport');
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(morgan('dev'));
-// app.use(session({
-//     secret: 'cat', // Replace with a strong secret key
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { secure: true } // Set to true if using HTTPS
-// }));
+app.use(session({
+    secret: 'cat', // Replace with a strong secret key
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true } // Set to true if using HTTPS
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());

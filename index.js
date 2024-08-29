@@ -12,13 +12,12 @@ const passport = require('passport');
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(express.json());
-app.use(session({
-    secret: 'cat', // Replace with a strong secret key
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true } // Set to true if using HTTPS
-}));
+// app.use(session({
+//     secret: 'cat', // Replace with a strong secret key
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: true } // Set to true if using HTTPS
+// }));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -50,7 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // Start the server
-const port = process.env.port;
+const port = 3000;
 app.listen(port, () => {
   console.log(`Express app listening at http://localhost:${port}`);
 });

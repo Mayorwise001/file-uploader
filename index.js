@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const index = require('./routes/routes')
+const indexRouter = require('./routes/routes')
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const path = require('path')
@@ -35,7 +35,7 @@ app.use(passport.session());
 
 // Basic route
 
-app.use('/', index)
+app.use('/', indexRouter)
 // app.get('/', (req,res)=>{
 //   res.send("Hello")
 // })

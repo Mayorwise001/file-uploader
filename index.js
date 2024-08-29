@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const indexRouter = require('./routes/routes')
+const indexRouter = require('./routes/index')
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const path = require('path')

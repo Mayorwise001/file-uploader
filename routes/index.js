@@ -20,6 +20,9 @@ function ensureAuthenticated(req, res, next) {
 router.get('/', (req, res) => {
     res.render('login', { errors: [], formData: {}, successMessage: null });
   });
+router.get('/signup', (req, res) => {
+    res.render('signup', { errors: [], formData: {}, successMessage: null });
+  });
 
 
   

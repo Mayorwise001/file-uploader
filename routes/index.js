@@ -102,7 +102,7 @@ router.post('/signup', [
 
 
 router.get('/login', (req, res) => {
-    // res.render('login', { errors: [], formData: {}, messages: [{ msg: 'Successfully logged in!', type: 'success' }], });
+    res.render('login', { errors: [], formData: {}, messages: [{ msg: 'Successfully logged in!', type: 'success' }], });
 
     // Clear the success message and form data from the session
     const successMessage = req.session.successMessage || '';

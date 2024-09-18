@@ -2,12 +2,14 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const indexRouter = require('./routes/index')
+const folderRouter = require('./routes/folderroute')
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const path = require('path')
 const bodyParser = require('body-parser')
 const session = require('express-session');
 const passport = require('passport');
+const flash = require('connect-flash');
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -19,6 +21,15 @@ app.use(session({
     cookie: { secure: false } // Set to true if using HTTPS
 }));
 
+app.use(flash());
+
+// Make flash messages available in all views
+app.use((req, res, next) => {
+  res.locals.successMessage = req.flash('successMessage');
+  res.locals.errors = req.flash('errors');
+  next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -26,6 +37,7 @@ app.use(passport.session());
 // Basic route
 
 app.use('/', indexRouter)
+app.use('/b', folderRouter)
 // app.get('/', (req,res)=>{
 //   res.send("Hello")
 // })
@@ -37,6 +49,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Middleware to serve static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/icons', express.static('icons'));
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));

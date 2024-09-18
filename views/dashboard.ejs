@@ -10,12 +10,93 @@
 <body>
     <div class="dashboard-container">
         <h1>File Uploader App</h1>
+        <h3>Welcome, <%= user.username %>!</h3>
         
         <div class="button-group">
             <a href="/logout" class="btn">Logout</a>
-            <a href="/create-folder" class="btn">Create Folder</a>
-            <a href="/upload" class="btn">Upload</a>
+            <a href="#" class="btn" id="create-folder-btn">Create Folder</a>
+            <a href="#" class="btn" id="upload-btn">Upload</a>
+        </div>
+        <!-- Hidden Folder Creation Form -->
+        <div id="create-folder-form-container" style="display:none;">
+            <h2>Create a New Folder</h2>
+            <form id="create-folder-form" action="/create-folder" method="POST">
+                <input type="text" name="folderName" placeholder="Enter folder name" required>
+                <button type="submit">Create</button>
+            </form>
+        </div>
+
+
+
+         <!-- Hidden File Upload Form -->
+         <div id="upload-form-container" style="display:none;">
+            <h2>Upload a File</h2>
+            <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+
+        <div class="files-container">
+            <h2>Your Folders:</h2>
+            <div class="folders-grid">
+                <% if (folders.length > 0) { %>
+                    <% folders.forEach(folder => { %>
+                        <div class="folder-card">
+                            <div class="folder-icon">
+                                <img src="/icons/folder.png" alt="Folder Icon">
+                            </div>
+                            <div class="folder-details">
+                                <p class="folder-name"><%= folder.name %></p>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>No folders created yet.</p>
+                <% } %>
+            </div>
+<!-- Display Files -->
+<h2>Your Files:</h2>
+<div class="files-grid">
+                <% if (user.files.length > 0) { %>
+                    <% user.files.forEach(file => { %>
+                        <div class="file-card">
+                            <% if (isImage(file.filename)) { %>
+                                <div class="file-image">
+                                    <a href="/file/<%= file._id %>">
+                                        <img src="/uploads/<%= file.filename %>" alt="Uploaded Image">
+                                    </a>
+                                </div>
+                            <% } else { %>
+                                <div class="file-icon">
+                                    <a href="/file/<%= file._id %>">
+                                        <img src="/icons/<%= getIcon(file.filename) %>" alt="File Icon">
+                                    </a>
+                                </div>
+                            <% } %>
+                            <div class="file-details">
+                                <p class="file-name"><a href="/file/<%= file._id %>"><%= file.filename %></a></p>
+                               
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>No files uploaded yet.</p>
+                <% } %>
+            </div>
         </div>
     </div>
+
+    <script>
+        // Show the upload form when the Upload button is clicked
+        document.getElementById('upload-btn').addEventListener('click', function() {
+            document.getElementById('upload-form-container').style.display = 'block';
+        });
+
+         // Show the folder creation form when the Create Folder button is clicked
+         document.getElementById('create-folder-btn').addEventListener('click', function() {
+            document.getElementById('create-folder-form-container').style.display = 'block';
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Details</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/fileDetails.css">
+
+</head>
+<body>
+  <div class="container">
+    <h1>Details for File Uploaded</h1>
+
+    <div class="image-details">
+        <img src="/b/uploads/<%= folder.id %>/<%= fileName %>" alt="<%= fileName %>" />
+      <div class="file-info">
+        <p><strong>File Name:</strong> <%= fileName %></p>
+        <p><strong>Folder:</strong> <%= folder.name %></p>
+
+        <!-- Add more details if needed -->
+      </div>
+    </div>
+    <!-- Delete button -->
+    <form action="/b/folder/<%= folder._id %>/image/<%= fileName %>/delete" method="POST">
+        <button type="submit" class="delete-btn">Delete File</button>
+      </form>
+    <a href="/b/folder/<%= folder._id %>">Back to Folder</a>
+    <a href="/b/dashboard">Back to Dashboard</a>
+  </div>
+</body>
+</html>

@@ -44,6 +44,203 @@ body {
     background-color: #000dff;
 }
 
+.upload-section {
+    margin-top: 20px;
+}
+
+.files-container {
+    margin-top: 20px;
+}
+
+.files-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 columns */
+    gap: 20px;
+}
+
+.file-card, .folder-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 150px; /* Limit the maximum width of the card */
+}
+
+/* Shared styles for both file and folder cards */
+.file-card img, .folder-card img {
+    max-width: 120px; /* Keep folder and file icons/images uniform */
+    max-height: 120px; 
+    object-fit: cover; /* Maintain aspect ratio and cover the area */
+    margin-bottom: 10px;
+}
+
+/* Folder-specific styles */
+.folder-card .folder-icon img {
+    width: 60px;
+    height: 60px;
+}
+
+
+.file-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 150px; /* Limit the maximum width of the card */
+}
+
+
+.file-image img {
+    max-width: 120px; /* Reduce the size of images */
+    max-height: 120px; /* Limit the height of images */
+    object-fit: cover; /* Maintain aspect ratio and cover the area */
+    margin-bottom: 10px;
+}
+
+.file-icon img {
+    max-width: 80px; /* Reduce the size of file icons */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 10px;
+}
+
+.file-details {
+    font-size: 12px; /* Smaller font size for file details */
+   
+}
+
+.file-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-decoration: none;
+}
+
+.file-name a {
+    color: #333;
+    text-decoration: none; /* Removes the underline */
+    font-weight: 500;
+}
+
+.file-name a:hover {
+    text-decoration: underline; /* Adds underline on hover */
+}
+
+
+.file-date {
+    color: #777;
+}
+
+input[type="file"] {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.folder-card .folder-icon img {
+    width: 60px; /* Make folder icon smaller */
+    height: 60px;
+}
+
+.folder-card .file-name {
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.folders-grid{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 columns */
+    gap: 20px;
+    cursor: pointer;
+}
+/* Styling for dashboard2 */
+.file-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .file-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .file-item a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+  }
+
+  .file-item a:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumb {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .breadcrumb a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+  
+  .breadcrumb span {
+    font-weight: bold;
+  }
+  
+  .image-details {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .image-details img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .file-info {
+      margin: 20px 0;
+      font-size: 1.2em;
+    }
+
+    .file-info p {
+      margin: 5px 0;
+    }
+  
+
 @media (max-width: 500px) {
     .dashboard-container h1 {
         font-size: 2rem;
@@ -57,5 +254,13 @@ body {
     .button-group .btn {
         width: 100%;
         font-size: 0.9rem;
+    }
+
+    .files-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
+    }
+
+    .file-card, .folder-card {
+        max-width: 100px; /* Reduce size on smaller screens */
     }
 }

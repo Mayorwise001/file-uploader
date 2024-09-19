@@ -10,24 +10,42 @@ const path = require('path');
 const File = require('../models/file');
 const LocalStrategy = require('passport-local').Strategy;
 const passport = require('passport');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
+
+
+
 
 router.use(express.urlencoded({ extended: true }));
 
 // Multer configuration for file storage
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      const folderPath = path.join(__dirname, 'uploads', req.params.folderId);
-      if (!fs.existsSync(folderPath)) {
-        fs.mkdirSync(folderPath, { recursive: true });
-      }
-      cb(null, folderPath);
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//       const folderPath = path.join(__dirname, 'uploads', req.params.folderId);
+//       if (!fs.existsSync(folderPath)) {
+//         fs.mkdirSync(folderPath, { recursive: true });
+//       }
+//       cb(null, folderPath);
+//     },
+//     filename: (req, file, cb) => {
+//       cb(null, Date.now() + '-' + file.originalname);
+//     }
+//   });
+  
+//   const upload = multer({ storage: storage });
+
+// Define Cloudinary storage for Multer
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: 'my_uploaded_images', // Folder in Cloudinary where images will be stored
+      allowed_formats: ['jpg', 'png', 'jpeg', 'gif'],
     },
-    filename: (req, file, cb) => {
-      cb(null, Date.now() + '-' + file.originalname);
-    }
   });
   
-  const upload = multer({ storage: storage });
+  // Multer middleware to handle single file uploads
+  const upload = multer({ storage });
+
 
   function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -64,6 +82,68 @@ router.get('/dashboard',ensureAuthenticated, async (req, res) => {
       }
 });
 
+// Route to delete a folder
+router.post('/folder/:id/delete', ensureAuthenticated, async (req, res) => {
+    try {
+        const folderId = req.params.id;
+
+        // Find and delete the folder by its ID
+        const folder = await Folder.findById(folderId);
+
+        if (!folder) {
+            return res.status(404).send('Folder not found');
+        }
+
+        // Ensure the folder belongs to the logged-in user
+        if (folder.user.toString() !== req.user._id.toString()) {
+            return res.status(403).send('Unauthorized to delete this folder');
+        }
+
+        // Delete the folder
+        await Folder.findByIdAndDelete(folderId);
+        res.redirect('/b/dashboard');
+    } catch (err) {
+        console.error('Error deleting folder:', err);
+        res.status(500).send('Error deleting folder');
+    }
+});
+
+
+// Route to edit a folder name
+router.post('/folder/:id/edit', ensureAuthenticated, async (req, res) => {
+    try {
+        const folderId = req.params.id;
+        const newFolderName = req.body.newFolderName.trim();
+
+        // Ensure the new folder name is not empty
+        if (!newFolderName) {
+            return res.status(400).send('Folder name cannot be empty');
+        }
+
+        // Find the folder by its ID and ensure it belongs to the logged-in user
+        const folder = await Folder.findById(folderId);
+
+        if (!folder) {
+            return res.status(404).send('Folder not found');
+        }
+
+        if (folder.user.toString() !== req.user._id.toString()) {
+            return res.status(403).send('Unauthorized to edit this folder');
+        }
+
+        // Update the folder name
+        folder.name = newFolderName;
+        await folder.save();
+
+        // Redirect to the dashboard to stay on the same page
+        res.redirect('/b/dashboard');
+    } catch (err) {
+        console.error('Error editing folder:', err);
+        res.status(500).send('Error editing folder');
+    }
+});
+
+
 
 // Route to handle folder creation
 router.post('/create-folder', async (req, res) => {
@@ -90,58 +170,141 @@ router.post('/create-folder', async (req, res) => {
   });
 
 // Route to display files in a specific folder
+// router.get('/folder/:folderId', ensureAuthenticated, async (req, res) => {
+//   try {
+//     const folder = await Folder.findById(req.params.folderId);
+//     if (!folder) {
+//       return res.status(404).send('Folder not found');
+//     }
+// // Fetch subfolders that have the current folder as their parent
+// const subfolders = await Folder.find({ parentFolderId: folder._id });
+
+// // Build breadcrumb trail by tracing back to parent folders
+// let breadcrumb = [];
+// let currentFolder = folder;
+// while (currentFolder.parentFolderId) {
+//   breadcrumb.unshift(currentFolder); // Add the current folder to the beginning of the breadcrumb
+//   currentFolder = await Folder.findById(currentFolder.parentFolderId); // Move up to the parent folder
+// }
+// breadcrumb.unshift(currentFolder); // Finally, add the root parent folder to the breadcrumb
+
+//     res.render('folder', { folder, subfolders, breadcrumb });
+//   } catch (err) {
+//     console.error("Error retrieving folder:", err); // Log the error
+//     res.status(500).send('Error fetching folder details');
+//   }
+// });
+
+
+
 router.get('/folder/:folderId', ensureAuthenticated, async (req, res) => {
-  try {
-    const folder = await Folder.findById(req.params.folderId);
-    if (!folder) {
-      return res.status(404).send('Folder not found');
+    try {
+      // Find the folder and populate the files with their Cloudinary URLs
+      const folder = await Folder.findById(req.params.folderId).populate('files');
+      if (!folder || folder.user.toString() !== req.user._id.toString()) {
+        return res.status(404).send('Folder not found');
+      }
+  
+   // Log the folder and files for debugging
+   console.log('Folder object:', folder);
+   folder.files.forEach(file => {
+     console.log('File object:', file);
+   });
+
+      // Fetch subfolders that have the current folder as their parent
+      const subfolders = await Folder.find({ parentFolderId: folder._id });
+  
+      // Build breadcrumb trail by tracing back to parent folders
+      let breadcrumb = [];
+      let currentFolder = folder;
+      while (currentFolder.parentFolderId) {
+        breadcrumb.unshift(currentFolder); // Add the current folder to the beginning of the breadcrumb
+        currentFolder = await Folder.findById(currentFolder.parentFolderId); // Move up to the parent folder
+      }
+      breadcrumb.unshift(currentFolder); // Finally, add the root parent folder to the breadcrumb
+  
+      folder.files.forEach(file => {
+        console.log(`File URL: ${file.cloudinaryUrl}`);
+      });
+      // Render the folder and pass files with Cloudinary URLs
+      res.render('folder', {
+        folder,
+        files: folder.files,
+        subfolders,
+        breadcrumb
+      });
+    } catch (err) {
+      console.error("Error retrieving folder:", err); // Log the error
+      res.status(500).send('Error fetching folder details');
     }
-// Fetch subfolders that have the current folder as their parent
-const subfolders = await Folder.find({ parentFolderId: folder._id });
-
-// Build breadcrumb trail by tracing back to parent folders
-let breadcrumb = [];
-let currentFolder = folder;
-while (currentFolder.parentFolderId) {
-  breadcrumb.unshift(currentFolder); // Add the current folder to the beginning of the breadcrumb
-  currentFolder = await Folder.findById(currentFolder.parentFolderId); // Move up to the parent folder
-}
-breadcrumb.unshift(currentFolder); // Finally, add the root parent folder to the breadcrumb
-
-    res.render('folder', { folder, subfolders, breadcrumb });
-  } catch (err) {
-    console.error("Error retrieving folder:", err); // Log the error
-    res.status(500).send('Error fetching folder details');
-  }
-});
+  });
+  
 
 // Route to handle file uploads into a folder
-router.post('/folder/:folderId/upload', upload.single('file'), async (req, res) => {
-  try {
-    const folder = await Folder.findById(req.params.folderId);
-    if (!folder || folder.user.toString() !== req.user._id.toString()) {
-      return res.status(404).send('Folder not found');
-    }
+// router.post('/folder/:folderId/upload', upload.single('file'), async (req, res) => {
+//   try {
+//     const folder = await Folder.findById(req.params.folderId);
+//     if (!folder || folder.user.toString() !== req.user._id.toString()) {
+//       return res.status(404).send('Folder not found');
+//     }
 
-        // Add the file to the folder and associate it with the logged-in user
-        const newFile = new File({
-            filename: req.file.filename,
-            folder: folder._id,
-            user: req.user._id // Assign file to the logged-in user
-        });
-        await newFile.save();
+//         // Add the file to the folder and associate it with the logged-in user
+//         const newFile = new File({
+//             filename: req.file.filename,
+//             folder: folder._id,
+//             user: req.user._id // Assign file to the logged-in user
+//         });
+//         await newFile.save();
 
-    // Add file name to the folder's files array
-    folder.files.push(req.file.filename);
-    await folder.save();
+//     // Add file name to the folder's files array
+//     folder.files.push(req.file.filename);
+//     await folder.save();
 
-    res.redirect(`/b/folder/${req.params.folderId}`);
-  } catch (err) {
+//     res.redirect(`/b/folder/${req.params.folderId}`);
+//   } catch (err) {
     
-    res.status(500).send('Error uploading file');
-  }
-});
+//     res.status(500).send('Error uploading file');
+//   }
+// });
 
+
+
+
+
+router.post('/folder/:folderId/upload', upload.single('file'), async (req, res) => {
+    try {
+      const folder = await Folder.findById(req.params.folderId);
+      if (!folder || folder.user.toString() !== req.user._id.toString()) {
+        return res.status(404).send('Folder not found');
+      }
+  
+      // Upload file to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
+  
+      // Create a new file entry with the Cloudinary URL
+      const newFile = new File({
+        filename: req.file.originalname,
+        cloudinaryUrl: result.secure_url, // Store the Cloudinary URL
+        folder: folder._id,
+        user: req.user._id // Assign file to the logged-in user
+      });
+  
+      await newFile.save();
+  
+      // Add file name to the folder's files array
+      folder.files.push(newFile._id); // Storing the file's ID in the folder
+      await folder.save();
+  
+      res.redirect(`/b/folder/${req.params.folderId}`);
+    } catch (err) {
+      console.error('Error uploading file:', err);
+      res.status(500).send('Error uploading file');
+    }
+  });
+  
+  
+
+  
 router.get('/folders/:folderName',ensureAuthenticated, async (req, res) => {
     const folderName = req.params.folderName;
     
@@ -417,6 +580,26 @@ router.get('/signup', (req, res) => {
             res.status(500).send('Server Error');
         }
     });
+
+    router.get('/test-cloudinary', async (req, res) => {
+        try {
+          const testImage = './icons/file-icon.png'
+          const result = await cloudinary.uploader.upload(testImage);
+      
+          // Log the result to see if it's successful
+          console.log('Cloudinary test upload result:', result);
+      
+          // Return a success message with the result
+          res.send(`Cloudinary is connected! Here's the test upload URL: ${result.secure_url}`);
+        } catch (error) {
+          // Log error if there's an issue
+          console.error('Cloudinary test upload error:', error);
+          res.status(500).send('Error connecting to Cloudinary');
+        }
+      });
+      
+
+
 
 // POST route for login form submission
 router.post('/login', [

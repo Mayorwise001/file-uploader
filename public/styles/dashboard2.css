@@ -55,11 +55,12 @@ body {
   }
   
   /* Button styling */
-  button[type="submit"] {
+  button[type="submit"],
+  button[type="button"] {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 12px;
+    padding: 8px;
     font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
@@ -93,9 +94,9 @@ body {
   }
   
   .folder-item i {
-    font-size: 30px;
+    font-size: 20px;
     color: #007bff;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
   }
   
   .folder-item a {
@@ -114,7 +115,7 @@ body {
     transform: translateY(-3px);
   }
 
-  * Styling for the logout button and nav */
+  /* Styling for the logout button and nav */
 .logout-nav {
     display: flex;
     justify-content: flex-end;
@@ -155,4 +156,34 @@ body {
 
 .folder-icon-btn i {
     font-size: 18px;
+}
+
+
+
+.edit-button i, .delete-button i, .save-button i{
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 15px; /* Adjust size as needed */
+  margin-left: 0px; /* Spacing between buttons */
+}
+
+.edit-input {
+  width: 150px;
+  padding: 4px;
+  margin-left: 10px;
+}
+
+.folder-link {
+  text-decoration: none;
+  color: #333;
+}
+
+.folder-item i {
+  margin-right: 5px;
+}
+
+.folder-item form {
+  display: inline-block;
 }

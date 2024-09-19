@@ -6,9 +6,10 @@ const folderSchema = new mongoose.Schema({
         required: true
       },
       parentFolderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Folder', default: null },
-      files: [{
-        type: String // Store file names
-      }],
+      // files: [{
+      //   type: String // Store file names
+      // }],
+      files: [{ type: mongoose.Schema.Types.ObjectId, ref: 'File' }],
       user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true } // Link folder to user
     });
 

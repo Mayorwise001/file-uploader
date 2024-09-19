@@ -6,6 +6,11 @@ const fileSchema = new Schema({
         type: String,
         required: true,
     },
+
+    cloudinaryUrl: {
+      type: String,
+      required: true // Ensure this is required, so every file must have a Cloudinary URL
+    },
     folder: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Folder',

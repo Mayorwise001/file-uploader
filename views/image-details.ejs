@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image Details</title>
+  <title>File Details</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles/fileDetails.css">
 
@@ -13,18 +13,27 @@
     <h1>Details for File Uploaded</h1>
 
     <div class="image-details">
-        <img src="/b/uploads/<%= folder.id %>/<%= fileName %>" alt="<%= fileName %>" />
-      <div class="file-info">
-        <p><strong>File Name:</strong> <%= fileName %></p>
-        <p><strong>Folder:</strong> <%= folder.name %></p>
+        
 
-        <!-- Add more details if needed -->
-      </div>
+          <!-- If the file is an image, display it -->
+          <div class="file-info">
+    <% if (file.cloudinaryUrl.match(/\.(jpeg|jpg|gif|png|webp)$/i)) { %>
+        <img src="<%= file.cloudinaryUrl %>" alt="<%= file.filename %>" class="preview-image">
+        <% } else if (file.cloudinaryUrl.match(/\.pdf$/i)) { %>
+            <p>This is a PDF file.</p>
+            <iframe src="<%= file.cloudinaryUrl %>" style="width: 100%; height: 600px;" frameborder="0"></iframe>
+          <% } else { %>
+            <p>This file is not an image or PDF.</p>
+          <% } %>
+      <p>Uploaded on: <%= file.createdAt.toDateString() %></p>
+        <p><strong>File Name:</strong> <%= file.filename %></p>
+        <p><strong>Folder:</strong> <%= folder.name %></p>
     </div>
-    <!-- Delete button -->
-    <form action="/b/folder/<%= folder._id %>/image/<%= fileName %>/delete" method="POST">
-        <button type="submit" class="delete-btn">Delete File</button>
-      </form>
+        <!-- Add more details if needed -->
+        <a href="/b/folder/<%= folder._id %>/file/<%= file._id %>/delete" class="delete-button">Delete File</a>
+
+    </div>
+
     <a href="/b/folder/<%= folder._id %>">Back to Folder</a>
     <a href="/b/dashboard">Back to Dashboard</a>
   </div>

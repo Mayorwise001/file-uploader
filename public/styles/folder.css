@@ -94,6 +94,9 @@ button[type="submit"] {
     background-color: #0056b3;
   }
 
+  #delete-btn{
+    background-color: #ffffff;
+  }
   /* File Grid Styling */
   .file-grid {
     display: grid;
@@ -134,12 +137,12 @@ button[type="submit"] {
   }
   
   .file-item a:hover {
-    color: #ffffff;
+    color: #b6abab;
     background-color: #f1f1f1;
   }
   
   .file-item i {
-    font-size: 6rem; /* Set the icon size */
+    font-size: 11rem; /* Set the icon size */
     color: #333;
   }
   

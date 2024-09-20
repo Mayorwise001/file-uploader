@@ -11,6 +11,10 @@ const fileSchema = new Schema({
       type: String,
       required: true // Ensure this is required, so every file must have a Cloudinary URL
     },
+    cloudinaryId: {
+        type: String,  // Add this field to store the Cloudinary public_id for file deletion
+        required: true // Ensure this is required, so every file must have a Cloudinary ID for deletion
+      },
     folder: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Folder',
@@ -20,11 +24,6 @@ const fileSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-    // user: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User',
-    //     required: true,
-    //},
 
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Link file to user
     createdAt: {
